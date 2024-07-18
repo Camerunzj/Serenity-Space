@@ -16,7 +16,7 @@
     <section class="pricing-table">
       <div class="pricing-table-item">
         <div class="pricing-table-item-header" style="background-color: #19A4BF;">
-          <h3>Paquete Inicial</h3>
+          <h3 style="color: white;">Paquete Inicial</h3>
         </div>
         <div class="pricing-table-item-price">
           <p><span class="price-big">$35</span><span class="price-small">.00</span></p>
@@ -27,7 +27,7 @@
           <li>Plan de tratamiento</li>
         </ul>
         <div class="pricing-table-item-footer">
-          <button class="btn-contratar">Contratar</button>
+          <button class="btn-contratar" style="color: white;">Contratar</button>
         </div>
       </div>
       <div class="pricing-table-item">
@@ -43,12 +43,12 @@
           <li>Seguimiento continuo</li>
         </ul>
         <div class="pricing-table-item-footer">
-          <button class="btn-contratar">Contratar</button>
+          <button class="btn-contratar" style="color: white;">Contratar</button>
         </div>
       </div>
       <div class="pricing-table-item">
         <div class="pricing-table-item-header" style="background-color: #D3ADA7;">
-          <h3>Paquete Premium</h3>
+          <h3 style="color: white;">Paquete Premium</h3>
         </div>
         <div class="pricing-table-item-price">
           <p><span class="price-big">$125</span><span class="price-small">.00</span></p>
@@ -59,7 +59,7 @@
           <li>Asesoría integral</li>
         </ul>
         <div class="pricing-table-item-footer">
-          <button class="btn-contratar">Contratar</button>
+          <button class="btn-contratar" style="color: white;">Contratar</button>
         </div>
       </div>
     </section>
