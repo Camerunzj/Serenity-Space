@@ -78,11 +78,11 @@ CREATE TABLE Calificaciones (
 
 INSERT INTO Usuarios (nombre, correo, contrasena, tipo_usuario)
 VALUES
-('Cliente 1', 'cliente1@example.com', 'contraseña123', 'cliente'),
-('Cliente 2', 'cliente2@example.com', 'contraseña456', 'cliente'),
-('Cliente 3', 'cliente3@example.com', 'contraseña789', 'cliente'),
-('Cliente 4', 'cliente4@example.com', 'contraseñaabc', 'cliente'),
-('Cliente 5', 'cliente5@example.com', 'contraseñadef', 'cliente');
+('Cliente 1', 'cliente1@example.com', 'contraseña123', 'usuario'),
+('Cliente 2', 'cliente2@example.com', 'contraseña456', 'usuario'),
+('Cliente 3', 'cliente3@example.com', 'contraseña789', 'usuario'),
+('Cliente 4', 'cliente4@example.com', 'contraseñaabc', 'usuario'),
+('Cliente 5', 'cliente5@example.com', 'contraseñadef', 'usuario');
 
 INSERT INTO Terapeutas (nombre, especialidad)
 VALUES

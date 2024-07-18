@@ -15,26 +15,36 @@
       <div class="card-body">
         <form action="../../includes/guardar_cita.php" method="POST">
           <div class="form-group">
-            <label for="id_cliente">Cliente:</label>
-            <select id="id_cliente" name="id_cliente" class="form-control" required>
-              <?php
-              include '../../database/database.php';
+          <label for="id_cliente">Cliente:</label>
+          <select id="id_cliente" name="id_cliente" class="form-control" required>
+            <?php
+            include '../../database/database.php';
 
-              $sqlClientes = "SELECT id_usuario, nombre FROM Usuarios WHERE tipo_usuario = 'cliente'";
-              $resultClientes = mysqli_query($conn, $sqlClientes);
+            if (isset($_SESSION['correo'])) {
+              $correo = $_SESSION['correo'];
+              $sqlClienteLogueado = "SELECT id_usuario, nombre FROM Usuarios WHERE correo = ?";
+              
+              $stmt = $conn->prepare($sqlClienteLogueado);
+              $stmt->bind_param("s", $correo);
+              $stmt->execute();
+              $resultClienteLogueado = $stmt->get_result();
 
-              if ($resultClientes && mysqli_num_rows($resultClientes) > 0) {
-                while ($row = mysqli_fetch_assoc($resultClientes)) {
+              if ($resultClienteLogueado->num_rows > 0) {
+                while ($row = $resultClienteLogueado->fetch_assoc()) {
                   echo '<option value="' . $row['id_usuario'] . '">' . $row['nombre'] . '</option>';
                 }
               } else {
-                echo '<option value="">No hay clientes disponibles</option>';
+                echo '<option value="">No se encontró al cliente logueado</option>';
               }
 
-              mysqli_free_result($resultClientes);
-              mysqli_close($conn);
-              ?>
-            </select>
+              $stmt->close();
+            } else {
+              echo '<option value="">No se ha iniciado sesión</option>';
+            }
+
+            mysqli_close($conn);
+            ?>
+          </select>
           </div>
           <div class="form-group">
             <label for="id_terapeuta">Terapeuta:</label>
