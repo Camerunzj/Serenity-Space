@@ -12,15 +12,8 @@
             emocional.
           </p>
           <div class="copywrite-text mb-5">
-            <p class="mb-0" style="color: #ffffff">
-              Creado con <i class="fa fa-heart mr-1"></i> por
-              <a
-                class="ml-1"
-                href="https://wrapbootstrap.com/user/DesigningWorld"
-                style="color: #19a4bf"
-              >
-                Siempre en busca de la salud
-              </a>
+            <p class="mb-0" style="color: #19a4bf">
+              Siempre en busca de la salud 
             </p>
           </div>
           <div class="footer_social_area">

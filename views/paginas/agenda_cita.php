@@ -9,7 +9,7 @@
 
   <div class="container mt-4 mb-4">
     <div class="card">
-      <div class="card-header" style="background-color: #23A6BE; color: white;">
+      <div class="card-header" style="background-color: #16292D; color: white;">
         <h2 class="mb-0">Agendar Cita</h2>
       </div>
       <div class="card-body">

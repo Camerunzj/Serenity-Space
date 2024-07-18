@@ -25,6 +25,9 @@
           <li>Consulta inicial</li>
           <li>Diagnóstico personalizado</li>
           <li>Plan de tratamiento</li>
+          <li>Psicoterapia Individual</li>
+          <li>Apoyo Psicológico a Adolescentes</li>
+          <li>Terapia de Depresión</li>
         </ul>
         <div class="pricing-table-item-footer">
           <button class="btn-contratar" style="color: white;">Contratar</button>
@@ -41,6 +44,9 @@
           <li>Consultas ilimitadas</li>
           <li>Acceso a especialistas</li>
           <li>Seguimiento continuo</li>
+          <li>Terapia de Pareja</li>
+          <li>Terapia Familiar</li>
+          <li>Asesoramiento en Crisis</li>
         </ul>
         <div class="pricing-table-item-footer">
           <button class="btn-contratar" style="color: white;">Contratar</button>
@@ -57,6 +63,9 @@
           <li>Atención prioritaria</li>
           <li>Consultas a domicilio</li>
           <li>Asesoría integral</li>
+          <li>Mindfulness y Bienestar</li>
+          <li>Terapia de Ansiedad</li>
+          <li>Coaching Personalizado</li>
         </ul>
         <div class="pricing-table-item-footer">
           <button class="btn-contratar" style="color: white;">Contratar</button>

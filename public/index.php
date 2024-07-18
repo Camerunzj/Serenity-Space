@@ -49,7 +49,7 @@
   <div class="hero">
     <div class="hero-text">
       <h1>Siempre en busca de la salud</h1>
-      <a href="../views/auth/login.php">Agenda tu cita</a>
+      <a href="../views/paginas/quotes.php">Agenda tu cita</a>
     </div>
   </div>
 
