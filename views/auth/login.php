@@ -8,7 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST['password'];
 
     try {
-        $stmt = $conn->prepare("SELECT contrasena FROM Usuarios WHERE correo = ?");
+        // Modificar la consulta SQL para seleccionar también el tipo_usuario
+        $stmt = $conn->prepare("SELECT contrasena, tipo_usuario FROM Usuarios WHERE correo = ?");
         
         if ($stmt === false) {
             throw new Exception('Error al preparar la declaración SQL: ' . $conn->error);
@@ -19,12 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             $stmt->store_result();
             if ($stmt->num_rows > 0) {
-                $stmt->bind_result($hashed_password);
+                $stmt->bind_result($hashed_password, $tipo_usuario);
                 $stmt->fetch();
                 if (password_verify($contrasena, $hashed_password)) {
                     session_start();
                     $_SESSION['correo'] = $correo;
-                    header("Location: /serenity-space/public/index.php");
+                    $_SESSION['tipo_usuario'] = $tipo_usuario; 
+                    header("Location: ../../public/index.php");
                     exit();
                 } else {
                     $errorLogin = true;

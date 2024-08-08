@@ -1,12 +1,19 @@
 -- TABLAS
 
+CREATE TABLE TipoUsuario (
+    id_tipo_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) UNIQUE
+);
+
 CREATE TABLE Usuarios (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100),
     correo VARCHAR(100) UNIQUE,
     contrasena VARCHAR(100),
-    tipo_usuario VARCHAR(50)
+    id_tipo_usuario INT,
+    FOREIGN KEY (id_tipo_usuario) REFERENCES TipoUsuario(id_tipo_usuario)
 );
+
 
 CREATE TABLE Terapeutas (
     id_terapeuta INT PRIMARY KEY AUTO_INCREMENT,
@@ -76,13 +83,13 @@ CREATE TABLE Calificaciones (
     FOREIGN KEY (id_terapia) REFERENCES Terapias(id_terapia)
 );
 
-INSERT INTO Usuarios (nombre, correo, contrasena, tipo_usuario)
-VALUES
-('Cliente 1', 'cliente1@example.com', 'contraseña123', 'usuario'),
-('Cliente 2', 'cliente2@example.com', 'contraseña456', 'usuario'),
-('Cliente 3', 'cliente3@example.com', 'contraseña789', 'usuario'),
-('Cliente 4', 'cliente4@example.com', 'contraseñaabc', 'usuario'),
-('Cliente 5', 'cliente5@example.com', 'contraseñadef', 'usuario');
+INSERT INTO TipoUsuario (nombre) VALUES ('admin');
+INSERT INTO TipoUsuario (nombre) VALUES ('cliente');
+
+INSERT INTO Usuarios (nombre, correo, contrasena, id_tipo_usuario) 
+VALUES ('Juan Pérez', 'juan@example.com', 'password123', 1);
+INSERT INTO Usuarios (nombre, correo, contrasena, id_tipo_usuario) 
+VALUES ('Ana Gómez', 'ana@example.com', 'password456', 2);
 
 INSERT INTO Terapeutas (nombre, especialidad)
 VALUES
