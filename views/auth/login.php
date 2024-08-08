@@ -8,8 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST['password'];
 
     try {
-        // Modificar la consulta SQL para seleccionar también el tipo_usuario
-        $stmt = $conn->prepare("SELECT contrasena, tipo_usuario FROM Usuarios WHERE correo = ?");
+        $stmt = $conn->prepare("SELECT contrasena, id_tipo_usuario FROM Usuarios WHERE correo = ?");
         
         if ($stmt === false) {
             throw new Exception('Error al preparar la declaración SQL: ' . $conn->error);
@@ -20,12 +19,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             $stmt->store_result();
             if ($stmt->num_rows > 0) {
-                $stmt->bind_result($hashed_password, $tipo_usuario);
+                $stmt->bind_result($hashed_password, $id_tipo_usuario);
                 $stmt->fetch();
                 if (password_verify($contrasena, $hashed_password)) {
                     session_start();
                     $_SESSION['correo'] = $correo;
-                    $_SESSION['tipo_usuario'] = $tipo_usuario; 
+                    $_SESSION['id_usuario'] = $id_usuario; 
+                    $_SESSION['id_tipo_usuario'] = $id_tipo_usuario; 
                     header("Location: ../../public/index.php");
                     exit();
                 } else {

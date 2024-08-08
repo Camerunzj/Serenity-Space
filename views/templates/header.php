@@ -1,7 +1,7 @@
 <?php
 session_start();
 $loggedIn = isset($_SESSION['correo']);
-$isAdmin = isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] === 'admin';
+$isAdmin = isset($_SESSION['id_tipo_usuario']) && $_SESSION['id_tipo_usuario'] == 1;
 ?>
 
 <header class="navbar">
@@ -14,13 +14,13 @@ $isAdmin = isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] === 'ad
     <a href="../../views/paginas/prices.php">Precios</a>
     <?php if ($loggedIn): ?>
       <a href="../../views/paginas/quotes.php">Citas</a>
-      <?php if ($isAdmin): ?>
-        <a href="../../views/admin/dashboard.php" class="btn-admin">Panel Admin</a>
-      <?php endif; ?>
       <a href="../../views/auth/logout.php" class="btn-login">Cerrar sesión</a>
     <?php else: ?>
       <a href="../../views/auth/login.php" class="btn-login">Iniciar sesión</a>
     <?php endif; ?>
     <a href="../../views/paginas/contact_me.php" class="btn-contact" style="background-color: #19a4bf">Contáctenos</a>
+    <?php if ($isAdmin): ?>
+        <a href="../../views/admin/dashboard.php" class="btn-contact">Administrar</a>
+    <?php endif; ?>
   </nav>
 </header>

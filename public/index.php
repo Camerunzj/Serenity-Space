@@ -29,7 +29,7 @@
       <?php
       session_start();
       $loggedIn = isset($_SESSION['correo']);
-      $isAdmin = isset($_SESSION['tipo_usuario']) && $_SESSION['tipo_usuario'] === 'admin';
+      $isAdmin = isset($_SESSION['id_tipo_usuario']) && $_SESSION['id_tipo_usuario'] == 1;
       ?>
       <?php if ($loggedIn): ?>
         <a href="../views/paginas/quotes.php">Citas</a>
@@ -44,7 +44,7 @@
         >Contáctenos</a
       >
       <?php if ($isAdmin): ?>
-        <a href="../../views/admin/dashboard.php" class="btn-login">Panel Admin</a>
+        <a href="../../views/admin/dashboard.php" class="btn-login">Administrar</a>
       <?php endif; ?>
     </nav>
   </header>

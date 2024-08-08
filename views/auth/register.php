@@ -4,19 +4,21 @@ include '../../database/database.php';
 $registroExitoso = false;
 $errorCorreoEnUso = false;
 
+$id_tipo_usuario_cliente = 2;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST['fullname'];
     $correo = $_POST['email'];
     $contrasena = password_hash($_POST['password'], PASSWORD_BCRYPT); 
 
     try {
-        $stmt = $conn->prepare("INSERT INTO Usuarios (nombre, correo, contrasena, tipo_usuario) VALUES (?, ?, ?, 'usuario')");
-        
+        $stmt = $conn->prepare("INSERT INTO Usuarios (nombre, correo, contrasena, id_tipo_usuario) VALUES (?, ?, ?, ?)");
+
         if ($stmt === false) {
             throw new Exception('Error al preparar la declaración SQL: ' . $conn->error);
         }
 
-        $stmt->bind_param("sss", $nombre, $correo, $contrasena);
+        $stmt->bind_param("sssi", $nombre, $correo, $contrasena, $id_tipo_usuario_cliente);
         if ($stmt->execute()) {
             $registroExitoso = true;
         } else {
@@ -33,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
