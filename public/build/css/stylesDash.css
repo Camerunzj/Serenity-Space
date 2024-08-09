@@ -132,6 +132,23 @@ a:hover {
   border-radius: 5px;
 }
 
+.btn-filter {
+  display: inline-block;
+  padding: 8px 20px;
+  margin: 20px 0;
+  background-color: #2ba8bd;
+  color: white;
+  border: 2px solid #2ba8bd;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn-filter:hover {
+  background-color: #2692a5;
+  text-decoration: none;
+  color: #fff;
+}
+
 .button:hover {
   background-color: #2692a5;
   text-decoration: none;

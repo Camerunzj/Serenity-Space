@@ -15,13 +15,14 @@
 
   <?php include '../templates/header.php'; ?>
 
+  <div class="card-body">
+  <a href="agenda_cita.php" class="btn btn-primary mb-3" style="background-color: #23A6BE; border-color: #23A6BE;">Agendar Cita</a>
   <div class="container mt-4">
     <div class="card">
-      <div class="card-header" style="background-color: #16292D; color: white;">
+      <div class="card-header mb-4" style="background-color: #16292D; color: white;">
         <h2 class="mb-0">Citas Agendadas</h2>
       </div>
-      <div class="card-body">
-        <a href="agenda_cita.php" class="btn btn-primary mb-3" style="background-color: #23A6BE; border-color: #23A6BE;">Agendar Cita</a>
+      
         <?php
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -56,7 +57,7 @@
               while ($row = $resultCitas->fetch_assoc()) {
                 echo '
                 <div class="col-md-4 mb-3">
-                  <div class="card card-custom">
+                  <div class="card card-custom ml-4">
                     <div class="card-body">
                       <p class="card-text"><strong>Fecha y Hora:</strong> ' . htmlspecialchars($row['fecha_hora']) . '</p>
                       <p class="card-text"><strong>Terapeuta:</strong> ' . htmlspecialchars($row['nombre_terapeuta']) . '</p>

@@ -1,3 +1,52 @@
+<?php
+include '../../database/database.php';
+
+if (!$conn) {
+    echo "No se pudo conectar a la base de datos.";
+    exit;
+}
+
+$sql = 'SELECT id_paquete, nombre, precio FROM Paquetes';
+$result_paquetes = $conn->query($sql);
+
+if (!$result_paquetes) {
+    echo '<div class="alert alert-danger">Error en la consulta: ' . $conn->error . '</div>';
+    exit;
+}
+
+$paquetes = [];
+while ($row = $result_paquetes->fetch_assoc()) {
+    $id_paquete = $row['id_paquete'];
+    $paquetes[$id_paquete] = [
+        'nombre' => $row['nombre'],
+        'precio' => $row['precio'],
+        'detalles' => []
+    ];
+
+    $sql_detalles = 'SELECT detalle FROM Detalles_Paquete WHERE id_paquete = ' . intval($id_paquete);
+    $result_detalles = $conn->query($sql_detalles);
+
+    if ($result_detalles) {
+        while ($detalle_row = $result_detalles->fetch_assoc()) {
+            $paquetes[$id_paquete]['detalles'][] = $detalle_row['detalle'];
+        }
+    } else {
+        echo '<div class="alert alert-danger">Error en la consulta de detalles: ' . $conn->error . '</div>';
+    }
+}
+
+$conn->close();
+
+function getPaqueteColor($nombre_paquete) {
+    $colors = [
+        'Paquete Inicial' => '#19A4BF',
+        'Paquete Profesional' => '#14292D',
+        'Paquete Premium' => '#D3ADA7'
+    ];
+    return $colors[$nombre_paquete] ?? '#FFFFFF'; 
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
   <!-- Head -->
@@ -14,63 +63,24 @@
 
     <!-- Contenido principal -->
     <section class="pricing-table">
-      <div class="pricing-table-item">
-        <div class="pricing-table-item-header" style="background-color: #19A4BF;">
-          <h3 style="color: white;">Paquete Inicial</h3>
+      <?php foreach ($paquetes as $paquete): ?>
+        <div class="pricing-table-item">
+          <div class="pricing-table-item-header" style="background-color: <?php echo getPaqueteColor($paquete['nombre']); ?>;">
+            <h3 style="color: white;"><?php echo htmlspecialchars($paquete['nombre'], ENT_QUOTES); ?></h3>
+          </div>
+          <div class="pricing-table-item-price">
+            <p><span class="price-big"><?php echo htmlspecialchars($paquete['precio'], ENT_QUOTES); ?></span><span class="price-small">.00</span></p>
+          </div>
+          <ul class="benefits-list">
+            <?php foreach ($paquete['detalles'] as $detalle): ?>
+              <li><?php echo htmlspecialchars($detalle, ENT_QUOTES); ?></li>
+            <?php endforeach; ?>
+          </ul>
+          <div class="pricing-table-item-footer">
+            <button class="btn-contratar" style="color: white;">Contratar</button>
+          </div>
         </div>
-        <div class="pricing-table-item-price">
-          <p><span class="price-big">$35</span><span class="price-small">.00</span></p>
-        </div>
-        <ul class="benefits-list">
-          <li>Consulta inicial</li>
-          <li>Diagnóstico personalizado</li>
-          <li>Plan de tratamiento</li>
-          <li>Psicoterapia Individual</li>
-          <li>Apoyo Psicológico a Adolescentes</li>
-          <li>Terapia de Depresión</li>
-        </ul>
-        <div class="pricing-table-item-footer">
-          <button class="btn-contratar" style="color: white;">Contratar</button>
-        </div>
-      </div>
-      <div class="pricing-table-item">
-        <div class="pricing-table-item-header" style="background-color: #14292D;">
-          <h3 style="color: white;">Paquete Profesional</h3>
-        </div>
-        <div class="pricing-table-item-price">
-          <p><span class="price-big">$65</span><span class="price-small">.00</span></p>
-        </div>
-        <ul class="benefits-list">
-          <li>Consultas ilimitadas</li>
-          <li>Acceso a especialistas</li>
-          <li>Seguimiento continuo</li>
-          <li>Terapia de Pareja</li>
-          <li>Terapia Familiar</li>
-          <li>Asesoramiento en Crisis</li>
-        </ul>
-        <div class="pricing-table-item-footer">
-          <button class="btn-contratar" style="color: white;">Contratar</button>
-        </div>
-      </div>
-      <div class="pricing-table-item">
-        <div class="pricing-table-item-header" style="background-color: #D3ADA7;">
-          <h3 style="color: white;">Paquete Premium</h3>
-        </div>
-        <div class="pricing-table-item-price">
-          <p><span class="price-big">$125</span><span class="price-small">.00</span></p>
-        </div>
-        <ul class="benefits-list">
-          <li>Atención prioritaria</li>
-          <li>Consultas a domicilio</li>
-          <li>Asesoría integral</li>
-          <li>Mindfulness y Bienestar</li>
-          <li>Terapia de Ansiedad</li>
-          <li>Coaching Personalizado</li>
-        </ul>
-        <div class="pricing-table-item-footer">
-          <button class="btn-contratar" style="color: white;">Contratar</button>
-        </div>
-      </div>
+      <?php endforeach; ?>
     </section>
 
     <!-- Footer -->

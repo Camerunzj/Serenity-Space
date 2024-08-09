@@ -38,7 +38,7 @@ $conn->close();
     href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
   />
   <link rel="stylesheet" href="../../public/build/css/stylesDash.css" />
-  <link rel="icon" href="../public/build/img/icon.png" type="image/x-icon" />
+  <link rel="icon" href="../../public/build/img/icon.png" type="image/x-icon" />
   <link
     rel="shortcut icon"
     href="../public/build/img/icon.png"
@@ -54,6 +54,7 @@ $conn->close();
     <a href="terapeutas/terapeutas.php">Terapeutas</a>
     <a href="terapias/terapias.php">Terapias</a>
     <a href="citas/citas.php">Citas</a>
+    <a href="paquetes/paquetes.php">Paquetes</a>
     <div class="sidebar-footer">
       <a href="../../public/index.php" class="btn btn-danger btn-logout">Salir</a>
     </div>
