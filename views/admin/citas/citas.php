@@ -6,18 +6,34 @@ if (!$conn) {
     exit;
 }
 
+$estado_filtro = isset($_GET['estado']) ? $_GET['estado'] : '';
+
 $sql = 'SELECT c.id_cita, c.fecha_hora, te.nombre AS nombre_terapeuta, t.nombre AS nombre_terapia, cl.nombre AS nombre_cliente, ec.estado AS estado_cita
         FROM Citas c
         JOIN Terapias t ON c.id_terapia = t.id_terapia
         JOIN Terapeutas te ON c.id_terapeuta = te.id_terapeuta
         JOIN Usuarios cl ON c.id_cliente = cl.id_usuario
-        JOIN Estado_Cita ec ON c.id_estado = ec.id_estado
-        ORDER BY c.fecha_hora DESC';
+        JOIN Estado_Cita ec ON c.id_estado = ec.id_estado';
+
+if ($estado_filtro === 'activa' || $estado_filtro === 'no_activa') {
+    $estado_filtro = $estado_filtro === 'activa' ? 'Activa' : 'No Activa';
+    $sql .= ' WHERE ec.estado = "' . $estado_filtro . '"';
+}
+
+$sql .= ' ORDER BY c.fecha_hora DESC';
 
 $result = $conn->query($sql);
 
 if (!$result) {
     echo '<div class="alert alert-danger">Error en la consulta: ' . $conn->error . '</div>';
+    exit;
+}
+
+$sql_estados = 'SELECT DISTINCT ec.estado FROM Estado_Cita ec';
+$result_estados = $conn->query($sql_estados);
+
+if (!$result_estados) {
+    echo '<div class="alert alert-danger">Error al obtener los estados: ' . $conn->error . '</div>';
     exit;
 }
 ?>
@@ -50,6 +66,26 @@ if (!$result) {
         <section class="options_area">
             <div class="container mt-5">
                 <h1 style="color: #333">Citas Agendadas</h1>
+                
+                <!-- Filtro por Estado -->
+                <form method="GET" action="">
+                    <div class="form-group">
+                        <label for="estado">Filtrar por Estado:</label>
+                        <select id="estado" name="estado" class="form-control">
+                            <option value="">Todos los Estados</option>
+                            <?php while ($row_estado = $result_estados->fetch_assoc()): ?>
+                                <option value="<?php echo htmlspecialchars($row_estado['estado'], ENT_QUOTES); ?>"
+                                    <?php echo $estado_filtro === $row_estado['estado'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($row_estado['estado'], ENT_QUOTES); ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-filter" style="border-color: #2ba8bd; font-weight: bold; box-shadow: none;">Filtrar</button>
+                    <a href="agregar_cita.php" class="button">Agregar Nueva Cita</a>
+                </form>
+                
+                <!-- Tabla de Citas -->
                 <table class="table table-striped mt-3">
                     <thead>
                         <tr>
@@ -92,6 +128,7 @@ if (!$result) {
 
     <?php
     $result->free();
+    $result_estados->free();
     $conn->close();
     ?>
 </body>

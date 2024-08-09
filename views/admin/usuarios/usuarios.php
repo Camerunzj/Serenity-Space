@@ -6,14 +6,28 @@ if (!$conn) {
     exit;
 }
 
-// Consulta para obtener los usuarios
+$sql_tipos_usuario = 'SELECT * FROM TipoUsuario';
+$result_tipos_usuario = $conn->query($sql_tipos_usuario);
+
+if (!$result_tipos_usuario) {
+    echo "Error en la consulta de tipos de usuario: " . $conn->error;
+    exit;
+}
+
+$selected_tipo_usuario = isset($_GET['tipo_usuario']) ? intval($_GET['tipo_usuario']) : 0;
+
 $sql = 'SELECT u.*, t.nombre AS tipo_usuario_nombre 
         FROM Usuarios u 
         JOIN TipoUsuario t ON u.id_tipo_usuario = t.id_tipo_usuario';
 
+if ($selected_tipo_usuario > 0) {
+    $sql .= ' WHERE u.id_tipo_usuario = ' . $selected_tipo_usuario;
+}
+
+$sql .= ' ORDER BY u.nombre';
+
 $result = $conn->query($sql);
 
-// Verifica si la consulta tuvo éxito
 if (!$result) {
     echo "Error en la consulta SQL: " . $conn->error;
     exit;
@@ -48,7 +62,26 @@ if (!$result) {
         <section class="options_area">
             <div class="container mt-5">
                 <h1 style="color: #333">Usuarios</h1>
-                <a href="agregar_usuario.php" class="button">Agregar Nuevo Usuario</a>
+                
+                <!-- Filtro por Tipo de Usuario -->
+                <form method="GET" action="">
+                    <div class="form-group">
+                        <label for="tipo_usuario">Filtrar por Tipo de Usuario:</label>
+                        <select id="tipo_usuario" name="tipo_usuario" class="form-control">
+                            <option value="">Todos los Tipos</option>
+                            <?php while ($row_tipo_usuario = $result_tipos_usuario->fetch_assoc()): ?>
+                                <option value="<?php echo htmlspecialchars($row_tipo_usuario['id_tipo_usuario'], ENT_QUOTES); ?>"
+                                    <?php echo $selected_tipo_usuario == $row_tipo_usuario['id_tipo_usuario'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($row_tipo_usuario['nombre'], ENT_QUOTES); ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-filter" style="border-color: #2ba8bd; font-weight: bold; box-shadow: none;">Filtrar</button>
+                    <a href="agregar_usuario.php" class="button">Agregar Nuevo Usuario</a>
+                </form>
+                
+                <!-- Tabla de Usuarios -->
                 <table class="table table-striped mt-3">
                     <thead>
                         <tr>
@@ -87,6 +120,7 @@ if (!$result) {
 
     <?php
     $result->free();
+    $result_tipos_usuario->free();
     $conn->close();
     ?>
 </body>

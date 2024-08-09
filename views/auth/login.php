@@ -8,7 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST['password'];
 
     try {
-        // Preparar la consulta
         $stmt = $conn->prepare("SELECT id_usuario, contrasena, id_tipo_usuario FROM Usuarios WHERE correo = ?");
         
         if ($stmt === false) {

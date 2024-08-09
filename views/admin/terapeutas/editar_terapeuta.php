@@ -27,14 +27,22 @@ if (!$terapeuta) {
 
 $stmt->close();
 
+$especialidadesQuery = 'SELECT id_especialidad, nombre FROM Especialidades';
+$especialidades = $conn->query($especialidadesQuery);
+
+if (!$especialidades) {
+    echo "Error al recuperar las especialidades: " . $conn->error;
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'];
-    $especialidad = $_POST['especialidad'];
+    $id_especialidad = intval($_POST['id_especialidad']);
     $correo = $_POST['correo'];
 
-    $sql = "UPDATE Terapeutas SET nombre = ?, especialidad = ?, correo = ? WHERE id_terapeuta = ?";
+    $sql = "UPDATE Terapeutas SET nombre = ?, id_especialidad = ?, correo = ? WHERE id_terapeuta = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssi", $nombre, $especialidad, $correo, $id_terapeuta);
+    $stmt->bind_param("sisi", $nombre, $id_especialidad, $correo, $id_terapeuta);
 
     if ($stmt->execute()) {
         echo "Terapeuta actualizado con éxito.";
@@ -84,8 +92,15 @@ $conn->close();
                         <input type="text" id="nombre" name="nombre" class="form-control" value="<?php echo htmlspecialchars($terapeuta['nombre'], ENT_QUOTES); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label for="especialidad">Especialidad</label>
-                        <input type="text" id="especialidad" name="especialidad" class="form-control" value="<?php echo htmlspecialchars($terapeuta['especialidad'], ENT_QUOTES); ?>" required>
+                        <label for="id_especialidad">Especialidad</label>
+                        <select id="id_especialidad" name="id_especialidad" class="form-control" required>
+                            <option value="">Seleccione una especialidad</option>
+                            <?php while ($row = $especialidades->fetch_assoc()): ?>
+                                <option value="<?php echo htmlspecialchars($row['id_especialidad'], ENT_QUOTES); ?>" <?php echo $row['id_especialidad'] == $terapeuta['id_especialidad'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($row['nombre'], ENT_QUOTES); ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="correo">Correo</label>

@@ -1,3 +1,38 @@
+<?php
+include '../../database/database.php';
+
+if (!$conn) {
+    echo "No se pudo conectar a la base de datos.";
+    exit;
+}
+
+$sql_servicios = 'SELECT s.id, s.nombre, s.descripcion, s.caracteristicas, p.nombre AS paquete
+                  FROM Servicios s
+                  JOIN Paquetes p ON s.id_paquete = p.id_paquete';
+$result_servicios = $conn->query($sql_servicios);
+
+if (!$result_servicios) {
+    echo '<div class="alert alert-danger">Error en la consulta: ' . $conn->error . '</div>';
+    exit;
+}
+
+$servicios = [];
+while ($row = $result_servicios->fetch_assoc()) {
+    $servicios[] = $row;
+}
+
+$conn->close();
+
+function getPaqueteColor($nombre_paquete) {
+    $colors = [
+        'Paquete Inicial' => '#19A4BF',
+        'Paquete Profesional' => '#14292D',
+        'Paquete Premium' => '#D3ADA7'
+    ];
+    return $colors[$nombre_paquete] ?? '#19A4BF'; 
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,183 +44,36 @@
 
   <header class="mini-header2">
     <div class="mini-header-content">
-      <h1 >Servicios</h1>
+      <h1>Servicios</h1>
     </div>
   </header>
 
   <!-- Servicios -->
   <section class="services container mt-5">
     <div class="row">
-      <!-- Servicio 1 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-1">
-            <h2 class="card-title mb-0" style="color: white;">Psicoterapia Individual</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Apoyo profesional personalizado para enfrentar retos emocionales.</p>
-            <ul class="list-unstyled">
-              <li>Terapia cognitivo-conductual</li>
-              <li>Técnicas de relajación</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Inicial</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Servicio 2 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-2">
-            <h2 class="card-title mb-0" style="color: white;">Terapia de Pareja</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Mejora la comunicación y resuelve conflictos en la relación.</p>
-            <ul class="list-unstyled">
-              <li>Enfoque en la resolución de conflictos</li>
-              <li>Técnicas de comunicación efectiva</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Profesional</p>
+      <?php foreach ($servicios as $servicio): ?>
+        <div class="col-lg-4 mb-4">
+          <div class="card h-100 shadow">
+            <div class="card-header" style="background-color: <?php echo getPaqueteColor($servicio['paquete']); ?>;">
+              <h2 class="card-title mb-0" style="color: white;"><?php echo htmlspecialchars($servicio['nombre'], ENT_QUOTES); ?></h2>
+            </div>
+            <div class="card-body">
+              <p class="card-text"><?php echo htmlspecialchars($servicio['descripcion'], ENT_QUOTES); ?></p>
+              <ul class="list-unstyled">
+                <?php
+                $caracteristicas = explode(',', $servicio['caracteristicas']);
+                foreach ($caracteristicas as $caracteristica):
+                ?>
+                  <li><?php echo htmlspecialchars(trim($caracteristica), ENT_QUOTES); ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <p class="mb-0">Paquete: <?php echo htmlspecialchars($servicio['paquete'], ENT_QUOTES); ?></p>
+            </div>
           </div>
         </div>
-      </div>
-
-      <!-- Servicio 3 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-3">
-            <h2 class="card-title mb-0" style="color: white;">Mindfulness y Bienestar</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Entrenamiento en mindfulness para reducir estrés y mejorar el bienestar general.</p>
-            <ul class="list-unstyled">
-              <li>Prácticas de mindfulness guiadas</li>
-              <li>Técnicas de respiración consciente</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Experto</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Servicio 4 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-1">
-            <h2 class="card-title mb-0" style="color: white;">Apoyo Psicológico a Adolescentes</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Acompañamiento profesional adaptado a las necesidades específicas de adolescentes.</p>
-            <ul class="list-unstyled">
-              <li>Enfoque en problemas adolescentes comunes</li>
-              <li>Terapia centrada en el desarrollo personal</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Inicial</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Servicio 5 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-2">
-            <h2 class="card-title mb-0" style="color: white;">Terapia Familiar</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Soluciones para mejorar la dinámica familiar y fortalecer los lazos afectivos.</p>
-            <ul class="list-unstyled">
-              <li>Intervenciones basadas en el sistema familiar</li>
-              <li>Terapia centrada en la resolución de conflictos familiares</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Profesional</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Servicio 6 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-3">
-            <h2 class="card-title mb-0" style="color: white;">Terapia de Ansiedad</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Tratamiento especializado para gestionar y superar la ansiedad.</p>
-            <ul class="list-unstyled">
-              <li>Técnicas de control de la ansiedad</li>
-              <li>Enfoque en la gestión emocional</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Experto</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Servicio 7 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-1">
-            <h2 class="card-title mb-0" style="color: white;">Terapia de Depresión</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Apoyo profesional para manejar y superar la depresión.</p>
-            <ul class="list-unstyled">
-              <li>Intervención psicológica especializada</li>
-              <li>Estrategias para mejorar el estado de ánimo</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Inicial</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Servicio 8 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-2">
-            <h2 class="card-title mb-0" style="color: white;">Asesoramiento en Crisis</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Apoyo profesional para situaciones de crisis emocional y personal.</p>
-            <ul class="list-unstyled">
-              <li>Estrategias de intervención inmediata</li>
-              <li>Apoyo emocional en momentos críticos</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Profesional</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Servicio 9 -->
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 shadow">
-          <div class="card-header color-3">
-            <h2 class="card-title mb-0" style="color: white;">Coaching Personalizado</h2>
-          </div>
-          <div class="card-body">
-            <p class="card-text">Desarrollo personal guiado para alcanzar objetivos y mejorar la calidad de vida.</p>
-            <ul class="list-unstyled">
-              <li>Coaching centrado en metas personales</li>
-              <li>Apoyo para el crecimiento personal</li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <p class="mb-0">Paquete: Experto</p>
-          </div>
-        </div>
-      </div>
+      <?php endforeach; ?>
     </div>
   </section>
 

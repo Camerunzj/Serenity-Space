@@ -28,9 +28,17 @@ CREATE TABLE Usuarios (
 CREATE TABLE Terapeutas (
     id_terapeuta INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100),
-    apellido VARCHAR(100)
-    especialidad VARCHAR(100),
-    correo VARCHAR(100)
+    apellido VARCHAR(100),
+    id_especialidad INT,
+    correo VARCHAR(100),
+    FOREIGN KEY (id_especialidad) REFERENCES Especialidades(id_especialidad)
+);
+
+---------------------------------------
+
+CREATE TABLE Especialidades (
+    id_especialidad INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) UNIQUE
 );
 
 ---------------------------------------
@@ -74,6 +82,17 @@ CREATE TABLE Detalles_Paquete (
     id_paquete INT,
     detalle VARCHAR(255) NOT NULL,
     FOREIGN KEY (id_paquete) REFERENCES Paquetes(id_paquete) ON DELETE CASCADE
+);
+
+---------------------------------------
+
+CREATE TABLE Servicios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT NOT NULL,
+    caracteristicas TEXT NOT NULL,
+    id_paquete INT,
+    FOREIGN KEY (id_paquete) REFERENCES Paquetes(id_paquete)
 );
 
 ---------------------------------------
@@ -168,3 +187,26 @@ VALUES
 ('Terapia Infantil', 'Dirigida a niños y adolescentes para tratar problemas emocionales y conductuales.', 70.00),
 ('Mindfulness', 'Técnica de meditación que ayuda a reducir el estrés y mejorar el bienestar emocional.', 90.00),
 ('Psicoterapia Gestalt', 'Enfoque terapéutico que enfatiza la importancia del "aquí y ahora".', 85.00);
+
+---------------------------------------
+
+INSERT INTO Especialidades (nombre) VALUES ('Psicología Clínica');
+INSERT INTO Especialidades (nombre) VALUES ('Psicoterapia Cognitivo-Conductual');
+INSERT INTO Especialidades (nombre) VALUES ('Psicología Infantil');
+INSERT INTO Especialidades (nombre) VALUES ('Psicología Deportiva');
+INSERT INTO Especialidades (nombre) VALUES ('Psicología de Pareja');
+
+----------------------------------------
+
+INSERT INTO Servicios (nombre, descripcion, caracteristicas, id_paquete) VALUES
+('Psicoterapia Individual', 'Apoyo profesional personalizado para enfrentar retos emocionales.', 'Terapia cognitivo-conductual, Técnicas de relajación', 1),
+('Terapia de Pareja', 'Mejora la comunicación y resuelve conflictos en la relación.', 'Enfoque en la resolución de conflictos, Técnicas de comunicación efectiva', 2),
+('Mindfulness y Bienestar', 'Entrenamiento en mindfulness para reducir estrés y mejorar el bienestar general.', 'Prácticas de mindfulness guiadas, Técnicas de respiración consciente', 3),
+('Apoyo Psicológico a Adolescentes', 'Acompañamiento profesional adaptado a las necesidades específicas de adolescentes.', 'Enfoque en problemas adolescentes comunes, Terapia centrada en el desarrollo personal', 1),
+('Terapia Familiar', 'Soluciones para mejorar la dinámica familiar y fortalecer los lazos afectivos.', 'Intervenciones basadas en el sistema familiar, Terapia centrada en la resolución de conflictos familiares', 2),
+('Terapia de Ansiedad', 'Tratamiento especializado para gestionar y superar la ansiedad.', 'Técnicas de control de la ansiedad, Enfoque en la gestión emocional', 3),
+('Terapia de Depresión', 'Apoyo profesional para manejar y superar la depresión.', 'Intervención psicológica especializada, Estrategias para mejorar el estado de ánimo', 1),
+('Asesoramiento en Crisis', 'Apoyo profesional para situaciones de crisis emocional y personal.', 'Estrategias de intervención inmediata, Apoyo emocional en momentos críticos', 2),
+('Coaching Personalizado', 'Desarrollo personal guiado para alcanzar objetivos y mejorar la calidad de vida.', 'Coaching centrado en metas personales, Apoyo para el crecimiento personal', 3);
+
+----------------------------------------

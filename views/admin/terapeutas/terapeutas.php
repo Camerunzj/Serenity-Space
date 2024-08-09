@@ -6,8 +6,39 @@ if (!$conn) {
     exit;
 }
 
-$sql = 'SELECT * FROM Terapeutas';
-$result = $conn->query($sql);
+$especialidad_filtro = isset($_GET['especialidad']) ? $_GET['especialidad'] : '';
+
+$sql = 'SELECT t.*, e.nombre AS especialidad_nombre 
+        FROM Terapeutas t 
+        LEFT JOIN Especialidades e ON t.id_especialidad = e.id_especialidad';
+
+if ($especialidad_filtro) {
+    $sql .= ' WHERE e.nombre = ?';
+}
+
+$sql .= ' ORDER BY t.nombre ASC';
+
+$stmt = $conn->prepare($sql);
+
+if ($especialidad_filtro) {
+    $stmt->bind_param('s', $especialidad_filtro);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+
+if (!$result) {
+    echo '<div class="alert alert-danger">Error en la consulta: ' . $conn->error . '</div>';
+    exit;
+}
+
+$sql_especialidades = 'SELECT DISTINCT e.nombre FROM Especialidades e';
+$result_especialidades = $conn->query($sql_especialidades);
+
+if (!$result_especialidades) {
+    echo '<div class="alert alert-danger">Error al obtener las especialidades: ' . $conn->error . '</div>';
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +69,26 @@ $result = $conn->query($sql);
         <section class="options_area">
             <div class="container mt-5">
                 <h1 style="color: #333">Terapeutas</h1>
-                <a href="agregar_terapeuta.php" class="button">Agregar Nuevo Terapeuta</a>
+                
+                <!-- Filtro por Especialidad -->
+                <form method="GET" action="">
+                    <div class="form-group">
+                        <label for="especialidad">Filtrar por Especialidad:</label>
+                        <select id="especialidad" name="especialidad" class="form-control">
+                            <option value="">Todas las Especialidades</option>
+                            <?php while ($row_especialidad = $result_especialidades->fetch_assoc()): ?>
+                                <option value="<?php echo htmlspecialchars($row_especialidad['nombre'], ENT_QUOTES); ?>"
+                                    <?php echo $especialidad_filtro === $row_especialidad['nombre'] ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($row_especialidad['nombre'], ENT_QUOTES); ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-filter" style="border-color: #2ba8bd; font-weight: bold; box-shadow: none;">Filtrar</button>
+                    <a href="agregar_terapeuta.php" class="button">Agregar Nuevo Terapeuta</a>
+                </form>
+                
+                <!-- Tabla de Terapeutas -->
                 <table class="table table-striped mt-3">
                     <thead>
                         <tr>
@@ -54,7 +104,7 @@ $result = $conn->query($sql);
                             <tr>
                                 <td><?php echo htmlspecialchars($row['id_terapeuta'], ENT_QUOTES); ?></td>
                                 <td><?php echo htmlspecialchars($row['nombre'], ENT_QUOTES); ?></td>
-                                <td><?php echo htmlspecialchars($row['especialidad'], ENT_QUOTES); ?></td>
+                                <td><?php echo htmlspecialchars($row['especialidad_nombre'], ENT_QUOTES); ?></td>
                                 <td><?php echo htmlspecialchars($row['correo'], ENT_QUOTES); ?></td>
                                 <td>
                                     <a href="editar_terapeuta.php?id=<?php echo htmlspecialchars($row['id_terapeuta'], ENT_QUOTES); ?>" class="btn" style="background-color: #2ba8bd; color: white;">Editar</a>
@@ -77,6 +127,7 @@ $result = $conn->query($sql);
 
     <?php
     $result->free();
+    $result_especialidades->free();
     $conn->close();
     ?>
 </body>

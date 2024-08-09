@@ -7,15 +7,13 @@ if (!$conn) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Obtener los datos del formulario
     $nombre = $_POST['nombre'];
-    $especialidad = $_POST['especialidad'];
+    $id_especialidad = intval($_POST['id_especialidad']);
     $correo = $_POST['correo'];
 
-    // Preparar la consulta SQL para insertar datos
-    $sql = "INSERT INTO Terapeutas (nombre, especialidad, correo) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO Terapeutas (nombre, id_especialidad, correo) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $nombre, $especialidad, $correo);
+    $stmt->bind_param("sis", $nombre, $id_especialidad, $correo);
 
     if ($stmt->execute()) {
         $message = "Terapeuta agregado exitosamente.";
@@ -24,6 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     $stmt->close();
+}
+
+// Consultar especialidades
+$especialidadesQuery = 'SELECT id_especialidad, nombre FROM Especialidades';
+$especialidades = $conn->query($especialidadesQuery);
+
+if (!$especialidades) {
+    echo "Error al recuperar las especialidades: " . $conn->error;
+    exit;
 }
 ?>
 
@@ -66,14 +73,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input type="text" id="nombre" name="nombre" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="especialidad">Especialidad</label>
-                        <input type="text" id="especialidad" name="especialidad" class="form-control" required>
+                        <label for="id_especialidad">Especialidad</label>
+                        <select id="id_especialidad" name="id_especialidad" class="form-control" required>
+                            <option value="">Seleccione una especialidad</option>
+                            <?php while ($row = $especialidades->fetch_assoc()): ?>
+                                <option value="<?php echo htmlspecialchars($row['id_especialidad'], ENT_QUOTES); ?>">
+                                    <?php echo htmlspecialchars($row['nombre'], ENT_QUOTES); ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="correo">Correo</label>
                         <input type="email" id="correo" name="correo" class="form-control" required>
                     </div>
-                    <button type="submit" class="btn" style="background-color: #013e6a; color: white;">Agregar Terapeuta</button>
+                    <button type="submit" class="btn" style="background-color: #2ba8bd; color: white;">Agregar Terapeuta</button>
                 </form>
             </div>
         </section>

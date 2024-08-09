@@ -43,7 +43,7 @@ function getPaqueteColor($nombre_paquete) {
         'Paquete Profesional' => '#14292D',
         'Paquete Premium' => '#D3ADA7'
     ];
-    return $colors[$nombre_paquete] ?? '#FFFFFF'; 
+    return $colors[$nombre_paquete] ?? '#19A4BF'; 
 }
 ?>
 
