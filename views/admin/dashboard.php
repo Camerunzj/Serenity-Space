@@ -53,6 +53,7 @@ $conn->close();
     <a href="usuarios/usuarios.php">Usuarios</a>
     <a href="terapeutas/terapeutas.php">Terapeutas</a>
     <a href="terapias/terapias.php">Terapias</a>
+    <a href="citas/citas.php">Citas</a>
     <div class="sidebar-footer">
       <a href="../../public/index.php" class="btn btn-danger btn-logout">Salir</a>
     </div>
@@ -63,7 +64,7 @@ $conn->close();
   <div class="content">
     <!-- Header -->
     <header class="header_area">
-      <a href="../dashboard.php" class="header_link">
+      <a href="./dashboard.php" class="header_link">
         <h1>Serenity Space</h1>
       </a>
     </header>
