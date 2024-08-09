@@ -91,7 +91,7 @@ $conn->close();
                         <label for="precio">Precio</label>
                         <input type="number" id="precio" name="precio" class="form-control" step="0.01" value="<?php echo htmlspecialchars($terapia['precio'], ENT_QUOTES); ?>" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Actualizar Terapia</button>
+                    <button type="submit" class="btn" style="background-color: #2ba8bd; color: white;">Actualizar Terapia</button>
                 </form>
             </div>
         </section>

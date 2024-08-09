@@ -67,7 +67,7 @@ if (!$result) {
                                 <td><?php echo htmlspecialchars($row['correo'], ENT_QUOTES); ?></td>
                                 <td><?php echo htmlspecialchars($row['tipo_usuario_nombre'], ENT_QUOTES); ?></td>
                                 <td>
-                                    <a href="editar_usuario.php?id=<?php echo htmlspecialchars($row['id_usuario'], ENT_QUOTES); ?>" class="btn" style="background-color: #013e6a; color: white;">Editar</a>
+                                    <a href="editar_usuario.php?id=<?php echo htmlspecialchars($row['id_usuario'], ENT_QUOTES); ?>" class="btn" style="background-color: #2ba8bd; color: white;">Editar</a>
                                     <a href="eliminar_usuario.php?id=<?php echo htmlspecialchars($row['id_usuario'], ENT_QUOTES); ?>" class="btn" style="background-color: #e74c3c; color: white;">Eliminar</a>
                                 </td>
                             </tr>

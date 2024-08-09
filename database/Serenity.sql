@@ -5,6 +5,11 @@ CREATE TABLE TipoUsuario (
     nombre VARCHAR(50) UNIQUE
 );
 
+CREATE TABLE Estado_Cita (
+    id_estado INT PRIMARY KEY AUTO_INCREMENT,
+    estado VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE Usuarios (
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100),
@@ -14,10 +19,10 @@ CREATE TABLE Usuarios (
     FOREIGN KEY (id_tipo_usuario) REFERENCES TipoUsuario(id_tipo_usuario)
 );
 
-
 CREATE TABLE Terapeutas (
     id_terapeuta INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(100),
+    apellido VARCHAR(100)
     especialidad VARCHAR(100),
     correo VARCHAR(100)
 );
@@ -35,9 +40,11 @@ CREATE TABLE Citas (
     id_terapeuta INT,
     fecha_hora DATETIME,
     id_terapia INT,
+    id_estado INT,
     FOREIGN KEY (id_cliente) REFERENCES Usuarios(id_usuario),
     FOREIGN KEY (id_terapeuta) REFERENCES Terapeutas(id_terapeuta),
-    FOREIGN KEY (id_terapia) REFERENCES Terapias(id_terapia)
+    FOREIGN KEY (id_terapia) REFERENCES Terapias(id_terapia),
+    FOREIGN KEY (id_estado) REFERENCES Estado_Cita(id_estado) 
 );
 
 CREATE TABLE Pagos (
@@ -51,40 +58,11 @@ CREATE TABLE Pagos (
     FOREIGN KEY (id_terapia) REFERENCES Terapias(id_terapia)
 );
 
-CREATE TABLE SesionesMindfulness (
-    id_sesion INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INT,
-    id_terapeuta INT,
-    fecha_hora TIMESTAMP,
-    duracion_minutos INT,
-    notas VARCHAR(500),
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
-    FOREIGN KEY (id_terapeuta) REFERENCES Terapeutas(id_terapeuta)
-);
-
-CREATE TABLE HistorialSesiones (
-    id_sesion INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INT,
-    id_terapeuta INT,
-    fecha_hora TIMESTAMP,
-    duracion_minutos INT,
-    notas VARCHAR(1000),
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
-    FOREIGN KEY (id_terapeuta) REFERENCES Terapeutas(id_terapeuta)
-);
-
-CREATE TABLE Calificaciones (
-    id_calificacion INT PRIMARY KEY AUTO_INCREMENT,
-    id_usuario INT,
-    id_terapia INT,
-    valoracion DECIMAL(2,1),
-    comentario VARCHAR(1000),
-    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
-    FOREIGN KEY (id_terapia) REFERENCES Terapias(id_terapia)
-);
-
 INSERT INTO TipoUsuario (nombre) VALUES ('admin');
 INSERT INTO TipoUsuario (nombre) VALUES ('cliente');
+
+INSERT INTO Estado_Cita (estado) VALUES ('activa');
+INSERT INTO Estado_Cita (estado) VALUES ('cancelada');
 
 INSERT INTO Usuarios (nombre, correo, contrasena, id_tipo_usuario) 
 VALUES ('Juan Pérez', 'juan@example.com', 'password123', 1);

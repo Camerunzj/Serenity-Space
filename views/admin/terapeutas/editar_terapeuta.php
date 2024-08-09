@@ -91,7 +91,7 @@ $conn->close();
                         <label for="correo">Correo</label>
                         <input type="email" id="correo" name="correo" class="form-control" value="<?php echo htmlspecialchars($terapeuta['correo'], ENT_QUOTES); ?>" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Actualizar Terapeuta</button>
+                    <button type="submit" class="btn" style="background-color: #2ba8bd; color: white;">Actualizar Terapeuta</button>
                 </form>
             </div>
         </section>

@@ -57,7 +57,7 @@ $result = $conn->query($sql);
                                 <td><?php echo htmlspecialchars($row['especialidad'], ENT_QUOTES); ?></td>
                                 <td><?php echo htmlspecialchars($row['correo'], ENT_QUOTES); ?></td>
                                 <td>
-                                    <a href="editar_terapeuta.php?id=<?php echo htmlspecialchars($row['id_terapeuta'], ENT_QUOTES); ?>" class="btn" style="background-color: #013e6a; color: white;">Editar</a>
+                                    <a href="editar_terapeuta.php?id=<?php echo htmlspecialchars($row['id_terapeuta'], ENT_QUOTES); ?>" class="btn" style="background-color: #2ba8bd; color: white;">Editar</a>
                                     <a href="eliminar_terapeuta.php?id=<?php echo htmlspecialchars($row['id_terapeuta'], ENT_QUOTES); ?>" class="btn" style="background-color: #e74c3c; color: white;">Eliminar</a>
                                 </td>
                             </tr>

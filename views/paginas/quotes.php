@@ -3,6 +3,13 @@
 <head>
   <?php include '../templates/head.php'; ?>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../public/build/css/styles.css" />
+  <style>
+    .card-custom {
+      width: 100%;
+      max-width: 18rem; /* Ajusta el ancho máximo del card */
+    }
+  </style>
 </head>
 <body>
 
@@ -20,18 +27,22 @@
             session_start();
         }
 
-        if (isset($_SESSION['correo'])) {
-          $correo = $_SESSION['correo'];
+        if (isset($_SESSION['id_usuario'])) {
+          $id_usuario = $_SESSION['id_usuario'];
 
           include '../../database/database.php';
 
-          $sqlCitas = "SELECT * FROM Citas WHERE id_cliente = ?";
+          $sqlCitas = "SELECT c.id_cita, c.fecha_hora, te.nombre AS nombre_terapeuta, t.nombre AS nombre_terapia
+              FROM Citas c
+              JOIN Terapias t ON c.id_terapia = t.id_terapia
+              JOIN Terapeutas te ON c.id_terapeuta = te.id_terapeuta
+              WHERE c.id_cliente = ? AND c.id_estado != 2";
 
           $stmt = $conn->prepare($sqlCitas);
           if (!$stmt) {
             echo '<div class="alert alert-danger">Error al preparar la consulta: ' . $conn->error . '</div>';
           } else {
-            $stmt->bind_param("s", $correo);
+            $stmt->bind_param("i", $id_usuario);
             $stmt->execute();
 
             if ($stmt->error) {
@@ -41,18 +52,22 @@
             $resultCitas = $stmt->get_result();
 
             if ($resultCitas->num_rows > 0) {
+              echo '<div class="row">';
               while ($row = $resultCitas->fetch_assoc()) {
                 echo '
-                <div class="card">
-                  <div class="card-body">
-                    <p class="card-text"><strong>Fecha y Hora:</strong> ' . htmlspecialchars($row['fecha_hora']) . '</p>
-                    <p class="card-text"><strong>Cliente:</strong> ' . htmlspecialchars($row['id_cliente']) . '</p>
-                    <p class="card-text"><strong>Terapeuta:</strong> ' . htmlspecialchars($row['id_terapeuta']) . '</p>
-                    <p class="card-text"><strong>Tipo de Terapia:</strong> ' . htmlspecialchars($row['id_terapia']) . '</p>
-                    <a href="#" class="btn btn-primary">Editar Cita</a>
+                <div class="col-md-4 mb-3">
+                  <div class="card card-custom">
+                    <div class="card-body">
+                      <p class="card-text"><strong>Fecha y Hora:</strong> ' . htmlspecialchars($row['fecha_hora']) . '</p>
+                      <p class="card-text"><strong>Terapeuta:</strong> ' . htmlspecialchars($row['nombre_terapeuta']) . '</p>
+                      <p class="card-text"><strong>Tipo de Terapia:</strong> ' . htmlspecialchars($row['nombre_terapia']) . '</p>
+                      <a href="../../includes/editar_cita.php?id_cita=' . htmlspecialchars($row['id_cita']) . '" class="btn btn-primary">Editar Cita</a>
+                      <a href="../../includes/cancelar_cita.php?id_cita=' . htmlspecialchars($row['id_cita']) . '" class="btn btn-danger">Cancelar Cita</a>
+                    </div>
                   </div>
                 </div>';
               }
+              echo '</div>';
             } else {
               echo '<div class="alert alert-info">No hay citas agendadas para este usuario.</div>';
             }

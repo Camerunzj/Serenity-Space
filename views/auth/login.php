@@ -8,7 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = $_POST['password'];
 
     try {
-        $stmt = $conn->prepare("SELECT contrasena, id_tipo_usuario FROM Usuarios WHERE correo = ?");
+        // Preparar la consulta
+        $stmt = $conn->prepare("SELECT id_usuario, contrasena, id_tipo_usuario FROM Usuarios WHERE correo = ?");
         
         if ($stmt === false) {
             throw new Exception('Error al preparar la declaración SQL: ' . $conn->error);
@@ -19,13 +20,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             $stmt->store_result();
             if ($stmt->num_rows > 0) {
-                $stmt->bind_result($hashed_password, $id_tipo_usuario);
+                $stmt->bind_result($id_usuario, $hashed_password, $id_tipo_usuario);
                 $stmt->fetch();
+                
                 if (password_verify($contrasena, $hashed_password)) {
                     session_start();
                     $_SESSION['correo'] = $correo;
-                    $_SESSION['id_usuario'] = $id_usuario; 
+                    $_SESSION['id_usuario'] = $id_usuario;
                     $_SESSION['id_tipo_usuario'] = $id_tipo_usuario; 
+
                     header("Location: ../../public/index.php");
                     exit();
                 } else {
@@ -47,16 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="es">
-
-  <!-- Head -->
-  <?php include '../templates/head.php'; ?>
-
+<head>
+    <?php include '../templates/head.php'; ?>
+</head>
 <body>
 
-    <!-- Header -->
     <?php include '../templates/header.php'; ?>
 
-    <!-- Contenido principal -->
     <section class="login-section">
       <div class="login-form">
         <h2>Iniciar Sesión</h2>
@@ -79,8 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </section>
 
-    <!-- Footer -->
     <?php include '../templates/footer.php'; ?>
     
-  </body>
+</body>
 </html>

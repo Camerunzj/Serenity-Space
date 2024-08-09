@@ -9,7 +9,7 @@ body {
 
 /* Estilos para el header */
 .header_area {
-  background-color: #010224;
+  background-color: #162a2e;
   color: #ffffff;
   padding: 20px 0;
   text-align: center;
@@ -40,7 +40,7 @@ body {
 
 /* Estilos para el footer */
 .footer_area {
-  background-color: #010224;
+  background-color: #162a2e;
   color: #ffffff;
   padding: 20px 0;
   text-align: center;
@@ -54,7 +54,7 @@ body {
 /* Estilos para el sidebar */
 .sidebar {
   width: 250px;
-  background-color: #010224;
+  background-color: #162a2e;
   color: #ffffff;
   padding: 20px;
   position: fixed;
@@ -74,7 +74,7 @@ body {
 }
 
 .sidebar a:hover {
-  background-color: #030441;
+  background-color: #122225;
   text-decoration: none;
 }
 
@@ -102,7 +102,7 @@ td {
 }
 
 th {
-  background-color: #010224;
+  background-color: #162a2e;
   color: white;
 }
 
@@ -112,7 +112,7 @@ tr:nth-child(even) {
 
 /* Estilos para enlaces */
 a {
-  color: #010224;
+  color: #162a2e;
   text-decoration: none;
   font-weight: bold;
 }
@@ -126,14 +126,14 @@ a:hover {
   display: inline-block;
   padding: 10px 20px;
   margin: 20px 0;
-  background-color: #013e6a;
+  background-color: #2ba8bd;
   color: white;
   text-decoration: none;
   border-radius: 5px;
 }
 
 .button:hover {
-  background-color: #0b519c;
+  background-color: #2692a5;
   text-decoration: none;
   color: #fff;
 }
@@ -194,7 +194,7 @@ h2 {
 }
 
 .bg-primary {
-  background-color: #0056b3 !important;
+  background-color: #2ba8bd !important;
 }
 
 .text-white {
@@ -220,7 +220,7 @@ h2 {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #010224;
+  background-color: #162a2e;
   margin-bottom: 3rem;
 }
 

@@ -96,7 +96,7 @@ $result_tipo_usuario = $conn->query($sql_tipo_usuario);
                             <?php endwhile; ?>
                         </select>
                     </div>
-                    <button type="submit" class="btn" style="background-color: #013e6a; color: white;">Actualizar Usuario</button>
+                    <button type="submit" class="btn" style="background-color: #2ba8bd; color: white;">Actualizar Usuario</button>
                 </form>
             </div>
         </section>
